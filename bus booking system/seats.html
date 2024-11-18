@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Seats</title>
+    <link rel="stylesheet" href="seats.css">
+    <style>
+        body {
+    background-color: #c5e8ee; /* Set background to light blue */
+    background-image: url('seats.jpg');
+    background-size: cover; /* Ensures the image covers the screen */
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #fff; /* Set text color to white for contrast */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px; /* Reduced margin from 400px to 20px */
+}
+
+.nav-buttons button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 150px;
+}
+
+.nav-buttons button:hover {
+    background-color: #555;
+}
+
+.seat-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+h2 {
+    color: #fff; /* Title color in white */
+    margin-bottom: 20px;
+}
+
+.bus-info {
+    margin-bottom: 20px;
+    color: #fff; /* Bus info text color in white */
+}
+
+.seats-container {
+    display: grid;
+    grid-template-columns: repeat(5, auto); /* 2 seats + aisle + 2 seats */
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.seat {
+    width: 40px;
+    height: 40px;
+    background-color: #fff; /* Seats background in white */
+    border: 2px solid #ccc;
+    text-align: center;
+    line-height: 40px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
+.seat.available {
+    background-color: #fff; /* Available seat color */
+    color: #000; /* Seat number text color */
+}
+
+.seat.selected {
+    background-color: #6c3; /* Initially selected seat color */
+    color: #fff;
+}
+
+.seat.reserved {
+    background-color: rgb(174, 174, 167); /* Reserved seat color (yellow) */
+    color: #000; /* Seat number text color */
+    cursor: not-allowed; /* Disable cursor */
+}
+
+.seat.occupied {
+    background-color: #f00; /* Occupied seat color */
+    color: #fff;
+    cursor: not-allowed;
+}
+
+.aisle {
+    width: 30px; /* Space for the aisle */
+}
+
+.total-amount {
+    margin: 20px 0;
+    font-size: 18px;
+    color: #fff; /* Total amount text color */
+}
+
+.confirm-btn {
+    margin-top: 10px;
+    padding: 15px 30px;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.confirm-btn:hover {
+    background-color: #218838;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation buttons horizontally centered -->
+    <div class="nav-buttons">
+        <button onclick="location.href='index.php'">Home</button>
+        <button onclick="location.href='search.html'">Search Buses</button>
+        <button onclick="location.href='contact.html'">Contact</button>
+    </div>
+
+    <div class="seat-selection">
+        <h2>Select Your Seats</h2>
+        <div class="bus-info"></div>
+        <div class="seats-container"></div>
+        <div class="total-amount" id="totalAmount">Total Amount: INR 0</div> <!-- Total amount display -->
+        <button class="confirm-btn" onclick="confirmSelection()">Confirm Selection</button><br> <!-- Confirm Button at bottom -->
+    </div>
+
+    <script>
+        const seatPrice = 1500; // Price per seat
+
+        // Function to get query parameters
+        function getQueryParams() {
+            const params = {};
+            const queryString = window.location.search.substring(1);
+            const pairs = queryString.split('&');
+
+            for (const pair of pairs) {
+                const [key, value] = pair.split('=');
+                params[decodeURIComponent(key)] = decodeURIComponent(value);
+            }
+
+            return params;
+        }
+
+        // Function to load reserved seats from localStorage
+        function loadReservedSeats() {
+            const reservedSeats = JSON.parse(localStorage.getItem('reservedSeats')) || [];
+            return reservedSeats;
+        }
+
+        // Function to save reserved seats to localStorage
+        function saveReservedSeats(seats) {
+            localStorage.setItem('reservedSeats', JSON.stringify(seats));
+        }
+
+        // On page load, fetch the bus data from query parameters
+        window.onload = function() {
+            const queryParams = getQueryParams();
+            const busId = queryParams.busId;
+            const busName = queryParams.busName;
+
+            // Display bus info
+            document.querySelector('.bus-info').innerHTML = `<h3>Bus: ${busName}</h3>`;
+
+            // Generate the 2+2 seat layout (40 seats in total, 10 rows of 4 seats each)
+            const seatsContainer = document.querySelector('.seats-container');
+            let seatLayout = '';
+            let seatNumber = 1;
+
+            // Load reserved seats and mark them in the layout
+            const reservedSeats = loadReservedSeats();
+
+            for (let row = 0; row < 10; row++) { // 10 rows
+                // Left 2 seats
+                for (let leftSeat = 0; leftSeat < 2; leftSeat++) {
+                    const isReserved = reservedSeats.includes(seatNumber);
+                    seatLayout += `<div class="seat ${isReserved ? 'reserved' : 'available'}" data-seat-number="${seatNumber}">${seatNumber}</div>`;
+                    seatNumber++;
+                }
+
+                // Aisle (spacer)
+                seatLayout += `<div class="aisle"></div>`;
+
+                // Right 2 seats
+                for (let rightSeat = 0; rightSeat < 2; rightSeat++) {
+                    const isReserved = reservedSeats.includes(seatNumber);
+                    seatLayout += `<div class="seat ${isReserved ? 'reserved' : 'available'}" data-seat-number="${seatNumber}">${seatNumber}</div>`;
+                    seatNumber++;
+                }
+            }
+
+            seatsContainer.innerHTML = seatLayout;
+        };
+
+        // Handle seat selection and calculate total amount
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('seat')) {
+                // Check if the seat is already reserved or occupied
+                if (!event.target.classList.contains('occupied') && !event.target.classList.contains('reserved')) {
+                    event.target.classList.toggle('selected');
+                    updateTotalAmount();
+                }
+            }
+        });
+
+        // Function to update the total amount based on selected seats
+        function updateTotalAmount() {
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            const totalAmount = selectedSeats.length * seatPrice;
+            document.getElementById('totalAmount').innerText = `Total Amount: INR ${totalAmount}`;
+        }
+
+        // Function to confirm selection and redirect
+        function confirmSelection() {
+            // Get selected seats and change their state to reserved
+            const selectedSeats = document.querySelectorAll('.seat.selected');
+            const reservedSeats = loadReservedSeats();
+
+            selectedSeats.forEach(seat => {
+                seat.classList.remove('selected'); // Remove selected class
+                seat.classList.add('reserved'); // Add reserved class
+                reservedSeats.push(parseInt(seat.dataset.seatNumber)); // Add seat number to reserved array
+            });
+
+            // Save updated reserved seats to localStorage
+            saveReservedSeats(reservedSeats);
+
+            // Show alert and redirect after 2 seconds
+            setTimeout(function() {
+                alert("Your seats are successfully reserved.");
+                // Redirect to a confirmation page or another page (modify URL as needed)
+                window.location.href = 'confirmation.html'; // Change to your desired URL
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

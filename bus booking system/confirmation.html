@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation Confirmation</title>
+    <link rel="stylesheet" href="confirmation.css">
+    <style>
+        body {
+            background-color: #000; /* Set background to black */
+            color: #fff; /* Set text color to white for contrast */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh; /* Full height */
+            margin: 0; /* Remove default margin */
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.2rem;
+            margin: 15px 0;
+        }
+
+        .button-container {
+            margin-top: 30px;
+        }
+
+        .back-button {
+            background-color: #28a745; /* Green background for button */
+            color: #fff; /* White text color */
+            border: none;
+            padding: 15px 30px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .back-button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Reservation Confirmed!</h1>
+    <p>Your seats have been successfully reserved.</p>
+    <p>Thank you for choosing our service!</p>
+
+    <div class="button-container">
+        <button class="back-button" onclick="goBack()">Go Back to Home</button>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'index.php'; // Change to your home page URL
+        }
+    </script>
+</body>
+</html>

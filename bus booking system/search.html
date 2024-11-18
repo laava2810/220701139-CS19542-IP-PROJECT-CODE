@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Buses - BookMyBusTicket</title>
+    <link rel="stylesheet" href="style1.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.php">Home</a></li>
+                <li><a href="search.html">Search Buses</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="search-container">
+        <h1>India's No. 1 Online Bus Ticket Booking Site</h1>
+        <form action="book.html" method="GET">
+            <div class="search-box">
+                <div class="input-group">
+                    <label for="from">From</label>
+                    <input type="text" id="from" name="from" placeholder="Enter city or stop" required>
+                </div>
+                <div class="input-group">
+                    <label for="to">To</label>
+                    <input type="text" id="to" name="to" placeholder="Enter destination" required>
+                </div>
+                <div class="input-group">
+                    <label for="date">Date</label>
+                    <input type="date" id="date" name="date" required>
+                </div>
+                <button type="submit" class="search-btn">Search Buses</button>
+                
+                
+            </div>
+        </form>
+        <p class="tagline">We Make Easy Go To Your Destination.</p>
+    </div>
+</body>
+</html>

@@ -1,0 +1,20 @@
+[
+    {
+        "from": "Chennai",
+        "to": "Coimbatore",
+        "date": "2024-10-08",
+        "departureTime": "09:00 AM",
+        "arrivalTime": "06:00 PM",
+        "price": "1500 INR",
+        "busName": "ABC Travels"
+    },
+    {
+        "from": "Chennai",
+        "to": "Vellore",
+        "date": "2024-10-08",
+        "departureTime": "06:00 AM",
+        "arrivalTime": "11:00 AM",
+        "price": "800 INR",
+        "busName": "FastBus"
+    }
+]
